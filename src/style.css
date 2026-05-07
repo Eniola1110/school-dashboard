@@ -1,0 +1,26 @@
+body {
+  background-color: #ffffff;
+  overflow-x: hidden;
+  color: var(--text);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #FF6B6B;
+  --secondary: #ffffff;
+  --text: #444;
+  --lavender: #C3A6FF;
+  --radius: 24px;
+  --radius-sm: 12px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.14);
+}
