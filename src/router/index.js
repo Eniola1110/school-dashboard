@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import login from '../views/login.vue'
 import dashboardlayout from '../layout/dashboardlayout.vue'
 import home from '../views/dashboard/home.vue'
@@ -22,13 +22,13 @@ const routes = [
       { path: 'teachers', component: teachers },
       { path: 'classes', component: classes },
       { path: 'students', component: students },
-       { path: 'attendance', component: attendance },
+      { path: 'attendance', component: attendance },
     ]
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 })
 

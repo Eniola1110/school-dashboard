@@ -30,7 +30,7 @@ const login = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: rgb(236, 114, 114);
+  background: rgb(243, 206, 206);
 }
 .login-box {
   background: var(--primary);

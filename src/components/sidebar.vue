@@ -12,10 +12,15 @@ const logout = () => {
   <div>
         <div class="sidebar">
           <div class="logo">
-            <RouterLink to="/">
+            <RouterLink to="/dashboard">
+              <div class="logo-wrapper">
+              <div class="logo-icon">
+                <i class="fa-solid fa-school"></i>
+              </div>
               <div class="logo-text">
                 <span class="logo-main">Kell's School</span>
                 <span class="logo-sub">Preschool & Nursery</span>
+              </div>
               </div>
             </RouterLink>
          </div>
@@ -23,11 +28,11 @@ const logout = () => {
           <ul>
             <li><router-link to="/dashboard"> <i class="fa-solid fa-house"></i> Home</router-link></li>
             <li><router-link to="/dashboard/admin"><i class="fa-solid fa-user-shield"></i> Admin</router-link></li>
-            <li><router-link to="/dashboard/students"><i class="fa-solid fa-user-shield"></i> Pupils</router-link></li>
+            <li><router-link to="/dashboard/students"><i class="fa-solid fa-children"></i> Pupils</router-link></li>
             <li><router-link to="/dashboard/teachers"><i class="fa-solid fa-chalkboard-user"></i>Teachers</router-link></li>
             <li><router-link to="/dashboard/classes"><i class="fa-solid fa-school"></i>Classes</router-link></li>
             <li><router-link to="/dashboard/parents"><i class="fa-solid fa-people-roof"></i>Parents</router-link></li>
-            <li><router-link to="/dashboard/attendance"><i class="fa-solid fa-user-shield"></i> Attendance</router-link></li>
+            <li><router-link to="/dashboard/attendance"> <i class="fa-solid fa-calendar-check"></i> Attendance</router-link></li>
           </ul>
         </div>
         <button class="logout-btn" @click="logout">
@@ -49,6 +54,22 @@ const logout = () => {
 .logo{
   padding: 20px;
   border-bottom: 1px solid rgb(178, 100, 100);
+}
+.logo-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  background: white;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #2c3e50;
 }
 .logo a{
   text-decoration: none;

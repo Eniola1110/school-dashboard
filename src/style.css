@@ -1,5 +1,5 @@
 body {
-  background-color: #ffffff;
+  background-color: var(--secondary);
   overflow-x: hidden;
   color: var(--text);
 }
@@ -15,9 +15,10 @@ html {
 }
 
 :root {
-  --primary: #FF6B6B;
+  /* --primary: #FF6B6B; */
+  --primary: #0ea5e9;
   --secondary: #ffffff;
-  --text: #444;
+  --text: #0f172a;
   --lavender: #C3A6FF;
   --radius: 24px;
   --radius-sm: 12px;
