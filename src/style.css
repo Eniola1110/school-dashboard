@@ -1,7 +1,6 @@
 body {
-  background-color: var(--secondary);
+  background-color: var(--bg);
   overflow-x: hidden;
-  color: var(--text);
 }
 
 html {
@@ -15,13 +14,15 @@ html {
 }
 
 :root {
-  /* --primary: #FF6B6B; */
-  --primary: #0ea5e9;
-  --secondary: #ffffff;
-  --text: #0f172a;
-  --lavender: #C3A6FF;
+  --bg: #f0f4f8;
+  --primary: #4a90d9;
+  --accent: #f5a623;
+  --dark: #1e2a4a;
+  --cream: #FFFDF4;
   --radius: 24px;
   --radius-sm: 12px;
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.14);
+  --font-display: 'Baloo 2', cursive;
+  --font-body: 'Nunito', sans-serif;
 }

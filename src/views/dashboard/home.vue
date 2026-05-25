@@ -1,28 +1,56 @@
 <script setup>
-const stats = [
-  { id: 1, title: 'Total Students', value: 250, icon: 'fa-solid fa-child' },
-  { id: 2, title: 'Teachers', value: 30, icon: 'fa-solid fa-chalkboard-user' },
-  { id: 3, title: 'Total Classes', value: 15, icon: 'fa-solid fa-school' },
-  {id: 4, title: 'Total Parents', value: 50, icon: 'fa-solid fa-people-roof'},
-]
-const students = [
-  { id: 1, name: "Ade Johnson", class: "Nursery 1", date: "2026-04-01" },
-  { id: 2, name: "Amaka Obi", class: "Nursery 2", date: "2026-04-21" },
-  { id: 3, name: "Tunde Bello", class: "Toddlers", date: "2026-3-15" },
-  { id: 4, name: "Segun Ade", class: "Creche", date: "2026-04-01"},
-]
+import { ref,onMounted } from 'vue'
+const stats = ref([
+  { id: 1, title: 'Total Students', value: 150 , icon: 'fa-solid fa-child' },
+  { id: 2, title: 'Teachers', value: 10, icon: 'fa-solid fa-chalkboard-user' },
+  { id: 3, title: 'Total Classes', value: 20 , icon: 'fa-solid fa-school' },
+  {id: 4, title: 'Total Parents', value: 70 , icon: 'fa-solid fa-people-roof'},
+])
+const students = ref([])
+
 const announcements = [
   { id: 1, title: "End of Term Party", date: '2026-05-07', message: 'All Parents are invited to the end of the term party.' },
   { id: 2, title: "Fee Reminder", date: '2026-05-07', message:'Second term fees are due by May 20th.' },
   {id: 3, title: "Public Holiday", date: '2026-05-07', message: 'School will be closed on May 27th.'}
 ]
+
+const fetchStats = async () => {
+  try {
+    const [studentsRes, teachersRes, parentsRes] = await Promise.all([
+      fetch('http://localhost:5000/api/students'),
+      fetch('http://localhost:5000/api/teachers'),
+      fetch('http://localhost:5000/api/parents'),
+    ])
+    const studentsData = await studentsRes.json()
+    const teachersData = await teachersRes.json()
+    const parentsData = await parentsRes.json()
+
+    stats.value[0].value = studentsData.students.length
+    stats.value[1].value = teachersData.teachers.length
+    stats.value[3].value = parentsData.parents.length
+
+    students.value = studentsData.students.slice(-2).reverse()
+  }
+  catch (err) {
+    console.log('Error fetching stats:', err)
+  }
+}
+
+onMounted(() => {
+  fetchStats()
+})
 </script>
 <template>
   <div class="page">
     <!-- welcome -->
       <div class="welcome">
+      <div class="text">
         <h1>Welcome to Kell's School</h1>
         <p>Here is a summary of what is happening in the school today.</p>
+      </div>
+      <div class="date">
+        {{ new Date().toDateString() }}
+      </div>
       </div>
 
       <!-- stats Cards -->
@@ -51,11 +79,11 @@ const announcements = [
               </tr>
             </thead>
             <tbody>
-              <tr v-for="student in students" :key="student.id">
-                <td>{{ student.id }}</td>
+              <tr v-for="(student, index) in students" :key="student.id">
+                <td>{{ index + 1}}</td>
                 <td>{{ student.name }}</td>
                 <td>{{ student.class }}</td>
-                <td>{{ student.date }}</td>
+                <td>{{ new Date(student.created_at).toDateString() }}</td>
               </tr>
             </tbody>
           </table>
@@ -77,21 +105,39 @@ const announcements = [
 
 <style scoped>
 .page{
-  padding: 20px;
+  padding: 24px;
+  font-family: var(--font-body);
 }
 /* welcome */
 .welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
+  background: white;
+  padding: 20px 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 .welcome h1{
-  color: var(--primary);
+  color: var(--dark);
   font-size: 1.5rem;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 .welcome p{
-  color: #777;
+  color: #718096;
+  font-size: 0.95rem;
 }
-
+.date {
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 /* stats */
 .stats {
   display: grid;
@@ -100,32 +146,37 @@ const announcements = [
   margin-bottom: 30px;
 }
 .stat-card{
-  background: var(--secondary);
-  border-radius: 10px;
+  background: white;
+  border-radius: var(--radius);
   padding: 20px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  gap: 16px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
 }
+
 .stat-icon{
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 55px;
+  height: 55px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
+  flex-shrink: 0;
   background: var(--primary);
-  color: var(--text);
+  color: white;
 }
 .stat-info h3{
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-size: 1.8rem;
+  color: var(--dark);
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 .stat-info p{
-  color: #777;
-  font-size: 1.2rem;
+ color: #718096;
+  font-size: 0.9rem;
 }
  /* bottom */
  .bottom {
@@ -134,65 +185,90 @@ const announcements = [
   gap: 20px;
  }
  .table-box {
-  background: var(--secondary);
-  border-radius: 10px;
-  padding:20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
  }
  .table-box h2{
-  margin-bottom: 15px;
-  color: var(--primary);
+  margin-bottom: 16px;
+  color: var(--dark);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
  }
  table {
   width: 100%;
   border-collapse: collapse;
  }
  th {
-  background: #2c3e50;
+  background: var(--primary);
   color: white;
   padding: 12px;
   text-align: left;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
  }
+ th:first-child { 
+  border-radius: 8px 0 0 8px; 
+}
+th:last-child { 
+  border-radius: 0 8px 8px 0; 
+}
  td{
   padding: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f0f4f8;
+  color: var(--dark);
+  font-size: 0.95rem;
  }
  tr:hover{
-  background: #f9f9f9;
+  background: #f0f7ff;
   cursor: pointer;
  }
  .announcement {
-  background: var(--secondary);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) ;
+   background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
  }
  .announcement h2{
-  margin-bottom: 15px;
-  color: var(--primary);
+ margin-bottom: 16px;
+  color: var(--dark);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
  }
  .announcement-card{
-  border-left: 4px solid #2c3e50;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  background: #f9f9f9;
-  border-radius: 0 5px 5px 0;
+  border-left: 4px solid var(--accent);
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  background: #fffbf0;
+  border-radius: 0 8px 8px 0;
+  transition: transform 0.2s;
  }
+ .announcement-card:hover {
+  transform: translateX(4px);
+}
  .announcement-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
  }
  .announcement-header h4{
   font-size: 0.95rem;
+  color: var(--dark);
+  font-weight: 600;
  }
  .announcement-header span{
   font-size: 0.8rem;
   color: #999;
+  background: #f0f4f8;
+  padding: 2px 8px;
+  border-radius: 20px;
  }
  .announcement-card p{
-  font-size: 0.85rem;
-  color: #666;
+   font-size: 0.85rem;
+  color: #718096;
+  line-height: 1.5;
  }
 </style>
